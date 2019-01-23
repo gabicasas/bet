@@ -1,5 +1,8 @@
 {"name": "nestproyect",
   "version": "0.0.1",
+  "engines": {
+    "node": "10.15.0"
+  },
   "description": "mi primer proyecto nest",
   "author": "Gabriel Casas Corral",
   "license": "MIT",
