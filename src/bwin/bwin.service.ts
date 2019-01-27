@@ -1,7 +1,9 @@
-import { Injectable, HttpService } from '@nestjs/common';
+import { Injectable, HttpService, Logger } from '@nestjs/common';
 
 @Injectable()
 export class BwinService {
+
+    private readonly logger: Logger = new Logger(BwinService.name);
 
     private static readonly urlAccessId: string = 'https://sports.bwin.es/es/client-bootstrap-scripts.js';
 
@@ -24,6 +26,7 @@ export class BwinService {
             // tslint:disable-next-line:no-debugger
 
             const clientAccessId: string = window.bwin.sports.configuration.LivewidgetClientConfiguration.accessId;
+            Logger.log('clientId: ' + clientAccessId);
             BwinService.accessId = clientAccessId;
             });
     }
