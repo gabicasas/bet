@@ -2,9 +2,8 @@ import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Photo } from 'photo/photo.entity';
-import { PhotoModule } from './photo/photo.module';
-import { PhotoService } from 'photo/photo.service';
+
+import { BwinModule } from './bwin/bwin.module';
 
 
 
@@ -19,9 +18,10 @@ import { PhotoService } from 'photo/photo.service';
     timeout: 5000,
     maxRedirects: 5,
   }),
-    PhotoModule],
+    
+    BwinModule],
   controllers: [AppController],
-  providers: [ AppService, PhotoService ],
+  providers: [ AppService],
   
  
 })
