@@ -17,7 +17,7 @@ export class AppService {
 
   getGoogle(): Observable<AxiosResponse<any>>{
       // return this.http.get('https://www.google.es');
-      const body: any ={'currencyCode':'EUR','alt':'json','locale':'es','marketIds':['924.170379398','924.170672539']};
+      const body: any ={'currencyCode':'EUR','alt':'json','locale':'es','marketIds':["924.171106628", "924.169860252", "924.171454242"]};
       return this.http.post(AppService.marketsBetFair,body);
             }
 }
