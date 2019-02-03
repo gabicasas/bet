@@ -2,8 +2,10 @@ import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { BwinModule } from './bwin/bwin.module';
+import { BetfairModule } from './betfair/betfair.module';
+
+
 
 
 
@@ -19,7 +21,9 @@ import { BwinModule } from './bwin/bwin.module';
     maxRedirects: 5,
   }),
     
-    BwinModule],
+    BwinModule,
+    
+    BetfairModule],
   controllers: [AppController],
   providers: [ AppService],
   

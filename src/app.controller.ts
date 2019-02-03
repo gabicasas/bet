@@ -1,20 +1,18 @@
 import { Get, Controller, Query, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 
-
-
 @Controller()
 export class AppController {
 
   private result: string = '';
   constructor(private readonly appService: AppService ) {}
 
-  //Tiene que venir con Content-type application-json para que el body lo lea como objeto
+  // Tiene que venir con Content-type application-json para que el body lo lea como objeto
  @Post('/post')
   post(@Body() body): string{
     return 'aa';
   }
-/** 
+/**
   @Get('/foto')
   photo(@Query() query): Photo[] {
     const photo: Photo = new Photo();
