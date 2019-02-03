@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { BetfairService } from './betfair.service';
 import { BetfairMarket } from './model/betfair.market.entity';
+import { HOSTS } from './model/HOSTS';
 
 @Controller('betfair')
 export class BetfairController {
@@ -12,13 +13,14 @@ export class BetfairController {
     @Post('/pushNewMarkets')
     pushNewMarkets(@Body() body): void {
         let markets: BetfairMarket[] = [];
+        // tslint:disable-next-line:forin
         for(let i in body){
        /* const market: BetfairMarket = new BetfairMarket();
         market.event=body[i].evento;
         market.market=body[i].mercado;*/
-        markets.push({event:body[i].evento,market:body[i].mercado} as BetfairMarket);
+        markets.push({event:body[i].evento, market:body[i].mercado, bet_host: HOSTS.betfairES} as BetfairMarket);
         this.betfair.saveMarket(markets).then(a => { });
-            markets=[];
+        markets=[];
         }
        
 
@@ -31,7 +33,16 @@ export class BetfairController {
      */
     @Post('/trackMarkets')
     trackMarkets(@Body() marketsBody): void {
-      this.betfair.obtainMarkets(marketsBody.markets).subscribe(response =>
-        this.logger.log(response.data));
+        this.betfair.getActiveMarkets().then((arrayMarket: BetfairMarket[]) => { 
+            const markets: string[] = [];
+            arrayMarket.forEach(element => {
+                markets.push(element.market);
+            });
+            this.logger.log('Mercados a obtener');
+            this.logger.log(markets);
+            this.betfair.obtainMarkets(markets).subscribe(response =>
+                this.logger.log(response.data));
+        });
+        
     }
 }
