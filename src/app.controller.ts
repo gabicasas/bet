@@ -1,4 +1,4 @@
-import { Get, Controller, Query, Post, Body } from '@nestjs/common';
+import { Get, Controller, Query, Post, Body, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -33,7 +33,7 @@ export class AppController {
   }*/
 
   @Get('/as')
-  root(@Query() query): string {
+  rootAs(@Query() query): string {
 
     
     const a = this.appService.getGoogle();
@@ -43,5 +43,11 @@ export class AppController {
       });
     return this.appService.root() + this.result;
   
+  }
+
+  @Get()
+  @Render('index')
+  root() {
+    return { message: 'Hello world!' };
   }
 }
