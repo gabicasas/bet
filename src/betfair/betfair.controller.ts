@@ -35,14 +35,20 @@ export class BetfairController {
     trackMarkets(@Body() marketsBody): void {
         this.betfair.getActiveMarkets().then((arrayMarket: BetfairMarket[]) => { 
             const markets: string[] = [];
-            arrayMarket.forEach(element => {
-                markets.push(element.market);
-            });
-            this.logger.log('Mercados a obtener');
-            this.logger.log(markets);
-            this.betfair.obtainMarkets(markets).subscribe(response =>
-                this.logger.log(response.data));
+
+            // tslint:disable-next-line:prefer-for-of
+            for ( let i: number = 0; i < arrayMarket.length; i = i + 10){
+                for (let j: number = 0 ; j < 10; j++){
+                    markets[j] = arrayMarket[i + j].market;
+                }
+                //Se solicitan datos de diez mercados
+                this.logger.log('Mercados a obtener');
+                this.logger.log(markets);
+                this.betfair.obtainMarkets(markets).subscribe(response =>
+                    this.logger.log(response.data));
+            }
+
         });
-        
+
     }
 }

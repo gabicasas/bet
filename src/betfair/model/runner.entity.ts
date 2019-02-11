@@ -1,9 +1,9 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
 import { BetfairMarket } from './betfair.market.entity';
 
 @Entity()
 export class RunnerEntity {
-    @PrimaryColumn()
+    @ManyToOne(type => BetfairMarket)
     market: BetfairMarket;
 
     @PrimaryColumn()
