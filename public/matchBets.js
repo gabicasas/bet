@@ -55,5 +55,8 @@ var marketsForBetfair=function(){
         if(selections[i].evento && selections[i].mercado)
             selToSend.push({evento:selections[i].evento,mercado:selections[i].mercado});
     }
-    console.log(JSON.stringify(selToSend));  
+    console.log(JSON.stringify(selToSend)); 
+    
+    let win=window.open("http://localhost:3000/index.html");
+    win.postMessage(selToSend,"*");
 };
