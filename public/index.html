@@ -1,13 +1,42 @@
 <html>
     <head>
+            <script src="http://localhost:3000/jquery-3.3.1.min.js"></script>
         <script>
+        let markets=null;    
         window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event)
 {
-    console.log(event);
-    alert(event);
- // if (event.origin !== "http://example.org:8080")
+    
+ // if (event.origin.indexOf("betfair")!=-1){
+    console.log(event.data);
+    
+    debugger;
+    markets=event.data;
+   
+   
+    $.ajax({
+    contentType: 'application/json',
+    data:JSON.stringify( markets),
+    dataType: 'json',
+    success: function(data){
+        alert("Mercados añadidos");
+    },
+    error: function(){
+        alert("mercados no añadidos");
+    },
+    processData: false,
+    type: 'POST',
+    url: '/betfair/pushNewMarkets'
+});
+   /* $.post('/betfair/pushNewMarkets','markets')
+    .done(function(data){
+        debugger;
+    })
+    .fail(function(data){
+        debugger;
+    })*/
+ //}
     return;
 
   // ...

@@ -58,5 +58,6 @@ var marketsForBetfair=function(){
     console.log(JSON.stringify(selToSend)); 
     
     let win=window.open("http://localhost:3000/index.html");
-    win.postMessage(selToSend,"*");
+    setTimeout(function(){
+    win.postMessage(selToSend,"*");},3000);
 };
