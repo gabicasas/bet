@@ -14,4 +14,6 @@ export class BetfairMarket {
   @Column()
   inplay: boolean;
 
+  @Column()
+  finalized: boolean;
 }
