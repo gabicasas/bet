@@ -2,6 +2,8 @@ import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { BetfairService } from './betfair.service';
 import { BetfairMarket } from './model/betfair.market.entity';
 import { HOSTS } from './model/HOSTS';
+import { RunnerEntity } from './model/runner.entity';
+import { BetEntity } from './model/bet.entity';
 
 @Controller('betfair')
 export class BetfairController {
@@ -14,23 +16,19 @@ export class BetfairController {
     pushNewMarkets(@Body() body): any {
         let markets: BetfairMarket[] = [];
         // tslint:disable-next-line:forin
-        for ( let i in body){
+        for ( const i in body){
        /* const market: BetfairMarket = new BetfairMarket();
         market.event=body[i].evento;
         market.market=body[i].mercado;*/
-        markets.push({event:body[i].evento, market:body[i].mercado, bet_host: HOSTS.betfairES, finalized: false} as BetfairMarket);
+        markets.push({event: body[i].evento, market: body[i].mercado, bet_host: HOSTS.betfairES, finalized: false} as BetfairMarket);
        //  const result =  this.betfair.saveMarket(markets);
-         this.betfair.saveMarket(markets).then(a => { });
-        markets=[]; 
+        this.betfair.saveMarket(markets).then(a => { });
+        markets = [];
         }
 
         return {ok: true};
-       
-
-        
 
     }
-
 
      obtainMarketSync(markets: string[]): Promise<any> {
         return new Promise( (resolve) => {
@@ -41,44 +39,69 @@ export class BetfairController {
       }
 
     /**
-     * 
+     *
      * @param marketsBody con un atributo markes que incluye el array de mercados
      */
     @Post('/trackMarkets')
      trackMarkets(@Body() marketsBody): void {
-        this.betfair.getActiveMarkets().then(async (arrayMarket: BetfairMarket[]) => { 
-            const markets: string[] = [];
-            let marketAux : BetfairMarket[] = [];
+        this.betfair.getActiveMarkets().then(async (arrayMarket: BetfairMarket[]) => {
+            let markets: string[] = [];
+            let marketAux: BetfairMarket[] = [];
+           
             // tslint:disable-next-line:prefer-for-of
             for ( let i: number = 0; i < arrayMarket.length; i = i + 10){
                 for (let j: number = 0 ; j < 10; j++){
-                    markets[j] = arrayMarket[i + j].market;
-                    // se marcan comofinalizados provisinalmente
-                    arrayMarket[i + j].finalized = true;
-                    marketAux.push(arrayMarket[i + j]);
+                    if ((i + j) < arrayMarket.length){
+                        markets[j] = arrayMarket[i + j].market;
+                        // se marcan comofinalizados provisinalmente
+                        arrayMarket[i + j].finalized = true;
+                        marketAux.push(arrayMarket[i + j]);
+                    }
                 }
                 // Se solicitan datos de diez mercados
                 this.logger.log('Mercados a obtener');
                 this.logger.log(markets);
                 const marketInfo = await this.obtainMarketSync(markets);
+                markets = [];
                 this.logger.log(marketInfo);
-                
-                //Se desactivan los mercados que ya no existen
-                let needSave : boolean = false;
+
+                // Se desactivan los mercados que ya no existen
+                let needSave: boolean = true;
                 // tslint:disable-next-line:forin
-                for (let index in marketInfo){
-                    for (let indej in marketAux){
-                        if (marketAux[indej].market == marketInfo[index].marketid){
-                            marketAux[indej].finalized=false;
+                for (const index in marketInfo){
+                    for (const indej in marketAux){
+                        if (marketAux[indej].market === marketInfo[index].marketId){
+                            marketAux[indej].finalized = false;
                             needSave = true;
+                            this.saveInfoRunner(marketAux[indej], marketInfo[index]);
                         }
                     }
                 }
                 if (needSave)
                     this.betfair.saveMarket(marketAux).then(a => { });
+                marketAux = [];
             }
 
         });
 
+    }
+    async saveInfoRunner(market: BetfairMarket, marketInfo: any): Promise<any> {
+       
+       // tslint:disable-next-line:forin
+        for (const i in marketInfo.runnerDetails){
+          const runner: RunnerEntity = new RunnerEntity();
+          runner.market = market;
+          runner.runnerId = marketInfo.runnerDetails[i].selectionId;
+          runner.status = marketInfo.runnerDetails[i].runnerStatus;
+          const runners: RunnerEntity[] = [];
+          runners.push(runner);
+          await this.betfair.saveRunnersSync(runners);
+          const bet: BetEntity = new BetEntity();
+          bet.runner = runner;
+          bet.fee = marketInfo.runnerDetails[i].runnerOdds.trueOdds.decimalOdds.decimalOdds;
+          await this.betfair.saveOnlyNewBetSync(bet);
+
+       }
+        
     }
 }
