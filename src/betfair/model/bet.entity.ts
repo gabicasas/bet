@@ -12,7 +12,7 @@ export class BetEntity {
     @ManyToOne(type => RunnerEntity,  {cascade: true, nullable: false, onDelete: 'CASCADE'})
     runner: RunnerEntity;
 
-    @Column({nullable: false})
+    @Column({nullable: false, type: 'float'})
     fee: number; //cuota
 
     @Column({nullable: false})

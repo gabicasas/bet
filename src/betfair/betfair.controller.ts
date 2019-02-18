@@ -30,12 +30,14 @@ export class BetfairController {
 
     }
 
-     obtainMarketSync(markets: string[]): Promise<any> {
+    async obtainMarketSync(markets: string[]): Promise<any> {
         return new Promise( (resolve) => {
             this.betfair.obtainMarkets(markets).subscribe(response => {
                resolve(response.data); });
 
         });
+
+        
       }
 
     /**
@@ -59,11 +61,11 @@ export class BetfairController {
                     }
                 }
                 // Se solicitan datos de diez mercados
-                this.logger.log('Mercados a obtener');
-                this.logger.log(markets);
+                // this.logger.log('Mercados a obtener');
+                // sthis.logger.log(markets);
                 const marketInfo = await this.obtainMarketSync(markets);
                 markets = [];
-                this.logger.log(marketInfo);
+                // this.logger.log(marketInfo);
 
                 // Se desactivan los mercados que ya no existen
                 let needSave: boolean = true;
@@ -73,7 +75,7 @@ export class BetfairController {
                         if (marketAux[indej].market === marketInfo[index].marketId){
                             marketAux[indej].finalized = false;
                             needSave = true;
-                            this.saveInfoRunner(marketAux[indej], marketInfo[index]);
+                            await this.saveInfoRunner(marketAux[indej], marketInfo[index]);
                         }
                     }
                 }
@@ -87,19 +89,20 @@ export class BetfairController {
     }
     async saveInfoRunner(market: BetfairMarket, marketInfo: any): Promise<any> {
        
-       // tslint:disable-next-line:forin
-        for (const i in marketInfo.runnerDetails){
+      
+       let r: any;
+        // tslint:disable-next-line:forin
+       for (const i in marketInfo.runnerDetails){
           const runner: RunnerEntity = new RunnerEntity();
           runner.market = market;
           runner.runnerId = marketInfo.runnerDetails[i].selectionId;
           runner.status = marketInfo.runnerDetails[i].runnerStatus;
-          const runners: RunnerEntity[] = [];
-          runners.push(runner);
-          await this.betfair.saveRunnersSync(runners);
+         
+         // r = await this.betfair.saveRunnersSync(runner);
           const bet: BetEntity = new BetEntity();
           bet.runner = runner;
           bet.fee = marketInfo.runnerDetails[i].runnerOdds.trueOdds.decimalOdds.decimalOdds;
-          await this.betfair.saveOnlyNewBetSync(bet);
+          r = await this.betfair.saveOnlyNewBetSync(bet);
 
        }
         

@@ -22,11 +22,11 @@ export class BetfairService {
 
     }
 
-    obtainMarkets(markets): Observable<AxiosResponse<any>> {
+     obtainMarkets(markets): Observable<AxiosResponse<any>> {
         // return this.http.get('https://www.google.es');
         const body: any = { currencyCode: 'EUR', alt: 'json', locale: 'es', marketIds: markets };
         this.logger.log(body);
-        return this.http.post(BetfairService.marketsBetFair, body);
+        return  this.http.post(BetfairService.marketsBetFair, body);
     }
 
     async saveMarket(markets: BetfairMarket[]): Promise<BetfairMarket[]> {
@@ -38,20 +38,39 @@ export class BetfairService {
         return await this.repoMarket.find({ where: { bet_host: HOSTS.betfairES, finalized: false } });
     }
 
-    saveRunnersSync(runners: RunnerEntity[]): Promise<any> {
-        return new Promise((resolve) => {
+    async saveRunnersSync(runner: RunnerEntity): Promise<any> {
+       /* return new Promise((resolve) => {
+            const runners: RunnerEntity[] = [];
+            runners.push(runner);
             this.repoRunner.save(runners).then(response => resolve(response));
 
-        });
+        });*/
+        const runKey: RunnerEntity = await this.repoRunner.findOne(runner.runnerId);
+        if (runKey)
+            return runKey;
+        const runners: RunnerEntity[] = [];
+        runners.push(runner);
+        
+        return await this.repoRunner.save(runners);
     }
 
     saveOnlyNewBetSync(bet: BetEntity): Promise<any> {
         return new Promise((resolve) => {
             // Se comprueba si existe apuesta con ese corredor y cuota
             this.repoBet.find({ runner: bet.runner, fee: bet.fee }).then(bets => {
+                this.logger.log('Hay ' + bets.length + ' elementos');
                 if (bets.length === 0) { // Si no hay se inserta
                     bet.timestamp = new Date();
-                    this.repoBet.save(bet).then(response => resolve(response));
+                    this.repoBet.save(bet).then(response => {
+                        this.logger.log(response);
+                        resolve(response);
+                    }, error => {
+                        this.logger.error('Fallo al guardar apuesta');
+                        this.logger.error(error);
+                        this.logger.error(JSON.stringify(bet));
+                    }); /* .catch<never>(onrejected => {
+                        this.logger.error(onrejected);
+                    }); */
                 } else
                     resolve({});
             });
