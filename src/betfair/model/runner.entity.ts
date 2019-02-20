@@ -4,6 +4,7 @@ import { BetfairMarket } from './betfair.market.entity';
 @Entity()
 export class RunnerEntity {
    
+    @PrimaryColumn()
     @ManyToOne(type => BetfairMarket,  {cascade: true, nullable: false, onDelete: 'CASCADE'})
     market: BetfairMarket;
 

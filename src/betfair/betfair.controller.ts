@@ -37,7 +37,6 @@ export class BetfairController {
 
         });
 
-        
       }
 
     /**
@@ -49,7 +48,7 @@ export class BetfairController {
         this.betfair.getActiveMarkets().then(async (arrayMarket: BetfairMarket[]) => {
             let markets: string[] = [];
             let marketAux: BetfairMarket[] = [];
-           
+
             // tslint:disable-next-line:prefer-for-of
             for ( let i: number = 0; i < arrayMarket.length; i = i + 10){
                 for (let j: number = 0 ; j < 10; j++){
@@ -88,8 +87,7 @@ export class BetfairController {
 
     }
     async saveInfoRunner(market: BetfairMarket, marketInfo: any): Promise<any> {
-       
-      
+
        let r: any;
         // tslint:disable-next-line:forin
        for (const i in marketInfo.runnerDetails){
@@ -97,7 +95,7 @@ export class BetfairController {
           runner.market = market;
           runner.runnerId = marketInfo.runnerDetails[i].selectionId;
           runner.status = marketInfo.runnerDetails[i].runnerStatus;
-         
+
          // r = await this.betfair.saveRunnersSync(runner);
           const bet: BetEntity = new BetEntity();
           bet.runner = runner;
@@ -105,6 +103,6 @@ export class BetfairController {
           r = await this.betfair.saveOnlyNewBetSync(bet);
 
        }
-        
+
     }
 }
