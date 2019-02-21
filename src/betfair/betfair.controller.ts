@@ -96,7 +96,7 @@ export class BetfairController {
           runner.runnerId = marketInfo.runnerDetails[i].selectionId;
           runner.status = marketInfo.runnerDetails[i].runnerStatus;
 
-         // r = await this.betfair.saveRunnersSync(runner);
+          r = await this.betfair.saveRunnersSync(runner);
           const bet: BetEntity = new BetEntity();
           bet.runner = runner;
           bet.fee = marketInfo.runnerDetails[i].runnerOdds.trueOdds.decimalOdds.decimalOdds;

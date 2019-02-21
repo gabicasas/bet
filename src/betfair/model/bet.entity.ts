@@ -9,7 +9,7 @@ export class BetEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => RunnerEntity,  {cascade: true, nullable: false, onDelete: 'CASCADE'})
+    @ManyToOne(type => RunnerEntity,  { nullable: false, onDelete: 'CASCADE'})
     runner: RunnerEntity;
 
     @Column({nullable: false, type: 'float'})

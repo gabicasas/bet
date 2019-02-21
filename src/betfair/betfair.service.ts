@@ -45,8 +45,8 @@ export class BetfairService {
             this.repoRunner.save(runners).then(response => resolve(response));
 
         });*/
-        const runKey: RunnerEntity = await this.repoRunner.findOne(runner.runnerId);
-        if (runKey)
+        const runKey: RunnerEntity[] = await this.repoRunner.find({market: runner.market , runnerId: runner.runnerId});
+        if (runKey.length > 0)
             return runKey;
         const runners: RunnerEntity[] = [];
         runners.push(runner);
