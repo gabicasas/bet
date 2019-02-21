@@ -1,9 +1,10 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, Unique, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, Unique, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 import { RunnerEntity } from './runner.entity';
 
 @Entity()
-@Unique(['runner', 'fee'])
+@Index(['runner', 'fee'], { unique: true })
+//s@Unique(['runner', 'fee'])
 export class BetEntity {
 
     @PrimaryGeneratedColumn()

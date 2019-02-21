@@ -25,7 +25,7 @@ export class BetfairService {
      obtainMarkets(markets): Observable<AxiosResponse<any>> {
         // return this.http.get('https://www.google.es');
         const body: any = { currencyCode: 'EUR', alt: 'json', locale: 'es', marketIds: markets };
-        this.logger.log(body);
+        // this.logger.log(body);
         return  this.http.post(BetfairService.marketsBetFair, body);
     }
 
@@ -46,6 +46,7 @@ export class BetfairService {
 
         });*/
         const runKey: RunnerEntity[] = await this.repoRunner.find({market: runner.market , runnerId: runner.runnerId});
+        this.logger.log(runKey.length + ' runners encontrados');
         if (runKey.length > 0)
             return runKey;
         const runners: RunnerEntity[] = [];
