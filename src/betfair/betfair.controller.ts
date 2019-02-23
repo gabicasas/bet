@@ -13,7 +13,7 @@ export class BetfairController {
     constructor(private betfair: BetfairService){}
 
     @Post('/pushNewMarkets')
-    pushNewMarkets(@Body() body): any {
+     pushNewMarkets(@Body() body): any {
         let markets: BetfairMarket[] = [];
         // tslint:disable-next-line:forin
         for ( const i in body){
@@ -98,7 +98,7 @@ export class BetfairController {
 
           r = await this.betfair.saveRunnersSync(runner);
           const bet: BetEntity = new BetEntity();
-          bet.runner = runner;
+          bet.runner = r;
           bet.fee = marketInfo.runnerDetails[i].runnerOdds.trueOdds.decimalOdds.decimalOdds;
           r = await this.betfair.saveOnlyNewBetSync(bet);
 

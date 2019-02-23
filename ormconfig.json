@@ -6,5 +6,6 @@
     "password": "f9wwp4xx295657nw",
     "database": "lds73c5vzlsljtcz",
     "entities": ["src/**/**.entity{.ts,.js}"],
-    "synchronize": true
+    "synchronize": true,
+    "logging": ["query","error", "schema"]
   }

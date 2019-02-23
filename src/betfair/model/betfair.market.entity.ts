@@ -1,14 +1,18 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
+//@Unique(['bet_host', 'market', 'event'])
 export class BetfairMarket {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
   bet_host: string;
 
-  @PrimaryColumn()
+  @Column()
   event: string;
 
-  @PrimaryColumn()
+  @Column()
   market: string;
 
   @Column()

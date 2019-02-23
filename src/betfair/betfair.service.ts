@@ -30,8 +30,14 @@ export class BetfairService {
     }
 
     async saveMarket(markets: BetfairMarket[]): Promise<BetfairMarket[]> {
-
-        return await this.repoMarket.save(markets);
+        const marketsToSave: BetfairMarket[] = [];
+        // tslint:disable-next-line:forin
+        for (const i in markets){
+            const mktsAux = await this.repoMarket.find({bet_host: markets[i].bet_host, event: markets[i].event, market: markets[i].market});
+            if (mktsAux.length === 0)
+                marketsToSave.push(markets[i]);
+        }
+        return await this.repoMarket.save(marketsToSave);
     }
 
     async getActiveMarkets(): Promise<BetfairMarket[]> {
@@ -46,9 +52,10 @@ export class BetfairService {
 
         });*/
         const runKey: RunnerEntity[] = await this.repoRunner.find({market: runner.market , runnerId: runner.runnerId});
+        this.logger.error(runKey);
         this.logger.log(runKey.length + ' runners encontrados');
         if (runKey.length > 0)
-            return runKey;
+            return runKey[0];
         const runners: RunnerEntity[] = [];
         runners.push(runner);
         
@@ -57,13 +64,14 @@ export class BetfairService {
 
     saveOnlyNewBetSync(bet: BetEntity): Promise<any> {
         return new Promise((resolve) => {
+            this.logger.log('Buscando apuesta ' + JSON.stringify({ runner: bet.runner, fee: bet.fee }));
             // Se comprueba si existe apuesta con ese corredor y cuota
             this.repoBet.find({ runner: bet.runner, fee: bet.fee }).then(bets => {
-                this.logger.log('Hay ' + bets.length + ' elementos');
+                this.logger.log('Hay ' + bets.length + ' apuestas');
                 if (bets.length === 0) { // Si no hay se inserta
                     bet.timestamp = new Date();
-                    this.repoBet.save(bet).then(response => {
-                        this.logger.log(response);
+                    this.repoBet.save(bet).then((response: BetEntity) => {
+                        this.logger.log('Guardada apuest con cuota ' + response.fee);
                         resolve(response);
                     }, error => {
                         this.logger.error('Fallo al guardar apuesta');

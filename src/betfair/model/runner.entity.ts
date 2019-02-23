@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, ManyToOne, Index, PrimaryGeneratedColumn
 import { BetfairMarket } from './betfair.market.entity';
 
 @Entity()
-@Index(['market', 'runnerId'], { unique: true })
+// @Index(['market', 'runnerId'], { unique: true })
 export class RunnerEntity {
 
     @PrimaryGeneratedColumn()
