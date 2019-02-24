@@ -7,6 +7,6 @@
     "database": "lds73c5vzlsljtcz",
     "entities": ["src/**/**.entity{.ts,.js}"],
     "synchronize": true,
-    "logging": ["query","error", "schema"]
+    "logging": ["error", "schema"]
     
   }

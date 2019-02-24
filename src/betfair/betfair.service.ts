@@ -63,9 +63,9 @@ export class BetfairService {
         runKey = await this.repoRunner.save(runners);
         return runKey[0];
     }
-
+    // Ahora guarda historico, para que solo actualice, hay qye quitar fee de la consulta de bets
     saveOnlyNewBetSync(bet: BetEntity): Promise<any> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             this.logger.log('Buscando apuesta ' + JSON.stringify({ runner: bet.runner, fee: bet.fee }));
             // Se comprueba si existe apuesta con ese corredor y cuota
            
@@ -75,17 +75,29 @@ export class BetfairService {
                 if (bets.length === 0) { // Si no hay se inserta
                     bet.timestamp = new Date();
                     this.repoBet.save(bet).then((response: BetEntity) => {
-                        this.logger.log('Guardada apuest con cuota ' + response.fee);
+                        this.logger.log('Guardada apuesta con cuota ' + response.fee);
                         resolve(response);
                     }, error => {
                         this.logger.error('Fallo al guardar apuesta');
                         this.logger.error(error);
                         this.logger.error(JSON.stringify(bet));
+                        reject(bet);
                     }); /* .catch<never>(onrejected => {
                         this.logger.error(onrejected);
                     }); */
-                } else
-                    resolve(bets[0]);
+                } else{
+                    bets[0].fee = bet.fee;
+                    bets[0].timestamp = new Date(),
+                    this.repoBet.save(bets[0]).then((response: BetEntity) => {
+                        this.logger.log('Actualizada apuesta con cuota ' + response.fee);
+                        resolve(response);
+                    }, error => {
+                        this.logger.error('Fallo al actualizar apuesta');
+                        this.logger.error(error);
+                        this.logger.error(JSON.stringify(bets[0]));
+                        reject(bets[0]);
+                    });
+                }
             });
 
 
