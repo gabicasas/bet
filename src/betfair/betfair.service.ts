@@ -51,7 +51,7 @@ export class BetfairService {
             this.repoRunner.save(runners).then(response => resolve(response));
 
         });*/
-        const runKey: RunnerEntity[] = await this.repoRunner.find({market: runner.market , runnerId: runner.runnerId});
+        let runKey: RunnerEntity[] = await this.repoRunner.find({market: runner.market , runnerId: runner.runnerId});
         this.logger.error(runKey);
         this.logger.log(runKey.length + ' runners encontrados');
         if (runKey.length > 0)
@@ -59,13 +59,16 @@ export class BetfairService {
         const runners: RunnerEntity[] = [];
         runners.push(runner);
         
-        return await this.repoRunner.save(runners);
+        runKey = await this.repoRunner.save(runners);
+        return runKey[0];
     }
 
     saveOnlyNewBetSync(bet: BetEntity): Promise<any> {
         return new Promise((resolve) => {
             this.logger.log('Buscando apuesta ' + JSON.stringify({ runner: bet.runner, fee: bet.fee }));
             // Se comprueba si existe apuesta con ese corredor y cuota
+           
+
             this.repoBet.find({ runner: bet.runner, fee: bet.fee }).then(bets => {
                 this.logger.log('Hay ' + bets.length + ' apuestas');
                 if (bets.length === 0) { // Si no hay se inserta
@@ -81,7 +84,7 @@ export class BetfairService {
                         this.logger.error(onrejected);
                     }); */
                 } else
-                    resolve({});
+                    resolve(bets[0]);
             });
 
 

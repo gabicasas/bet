@@ -100,6 +100,7 @@ export class BetfairController {
           const bet: BetEntity = new BetEntity();
           bet.runner = r;
           bet.fee = marketInfo.runnerDetails[i].runnerOdds.trueOdds.decimalOdds.decimalOdds;
+          this.logger.warn('Guardando con ' + bet.runner.id);
           r = await this.betfair.saveOnlyNewBetSync(bet);
 
        }
