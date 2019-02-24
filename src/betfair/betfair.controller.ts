@@ -13,7 +13,7 @@ export class BetfairController {
     constructor(private betfair: BetfairService){}
 
     @Post('/pushNewMarkets')
-     pushNewMarkets(@Body() body): any {
+     async pushNewMarkets(@Body() body): Promise<any> {
         let markets: BetfairMarket[] = [];
         // tslint:disable-next-line:forin
         for ( const i in body){
@@ -22,7 +22,7 @@ export class BetfairController {
         market.market=body[i].mercado;*/
         markets.push({event: body[i].evento, market: body[i].mercado, bet_host: HOSTS.betfairES, finalized: false} as BetfairMarket);
        //  const result =  this.betfair.saveMarket(markets);
-        this.betfair.saveMarket(markets).then(a => { });
+        await this.betfair.saveMarket(markets);
         markets = [];
         }
 

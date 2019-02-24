@@ -34,6 +34,7 @@ export class BetfairService {
         // tslint:disable-next-line:forin
         for (const i in markets){
             const mktsAux = await this.repoMarket.find({bet_host: markets[i].bet_host, event: markets[i].event, market: markets[i].market});
+            this.logger.log(mktsAux.length + ' mercados encontrados');
             if (mktsAux.length === 0)
                 marketsToSave.push(markets[i]);
         }
