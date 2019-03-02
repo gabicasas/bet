@@ -5,7 +5,7 @@
     "username": "ojf59uh4cb53m3vz",
     "password": "f9wwp4xx295657nw",
     "database": "lds73c5vzlsljtcz",
-    "entities": ["src/**/**.entity{.ts,.js}"],
+    "entities": ["src/betfair/model/**/**.entity{.ts,.js}"],
     "synchronize": true,
     "logging": ["error", "schema"]
     
