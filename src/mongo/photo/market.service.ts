@@ -27,6 +27,19 @@ export class MarketService {
     return await this.marketRepository.find();
   }
 
+  async findMarket(idMarket: string): Promise<Market[]> {
+    // const repo = this. marketRepository.manager.connection.getMongoRepository(Market);
+    const repo = this. marketRepository;
+    
+    return await repo.find(
+      {
+          where: { ids : {
+              $in: [idMarket],
+          }},
+      },
+);
+  }
+
   async save(markets: Market[]): Promise<Market[]> {
     return await this.marketRepository.save(markets);
   }
