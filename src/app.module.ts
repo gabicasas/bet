@@ -5,8 +5,8 @@ import { AppService } from './app.service';
 import { BwinModule } from './bwin/bwin.module';
 import { BetfairModule } from './betfair/betfair.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CatsModule } from 'mongo/cats/cats.module';
-import { PhotoModule } from 'mongo/photo/photo.module';
+// import { CatsModule } from 'mongo/cats/cats.module';
+import { PhotoModule } from './mongo/photo/photo.module';
 import { Photo } from 'mongo/photo/photo.entity';
 
 const mongoOptions = {
@@ -32,14 +32,15 @@ const mongoOptions = {
       synchronize: true,
       name: 'mongoConnection',
     }),
-    PhotoModule,
+   
     HttpModule.register({
     timeout: 5000,
     maxRedirects: 5,
   }),
     BwinModule,
     BetfairModule,
-    CatsModule],
+    PhotoModule,
+    /* CatsModule */],
   controllers: [AppController],
   providers: [ AppService],
 
