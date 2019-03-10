@@ -5,7 +5,7 @@ export class Runner {
   //@ObjectIdColumn() id: ObjectID;
 
   // @Column()
-   ids: string[];
+   ids: string[] = [];
 
  // @Column()
   fee: any;

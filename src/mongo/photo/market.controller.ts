@@ -46,20 +46,56 @@ export class MarketController {
         }
       }
 
+
+
+
       // Se solicitan datos de diez mercados
       const marketInfo: any[] = await this.marketService.obtainMarketsFromBetfair(markets);
 
-      for(let i: number = 0; i< marketInfo.length; i++){
-        //todo: ver si existe o se crea uno
-        let mrkt: Market = new Market();
+      // tslint:disable-next-line:prefer-for-of
+      for (let i: number = 0; i < marketInfo.length; i++) {
+
+        this.logger.log('Mercado ' + marketInfo[i].marketId);
+        let mrkt: Market;
+
+        const mrkts: Market[] = await this.marketService.findMarket(marketInfo[i].marketId);
+        if (mrkts.length === 1)
+          mrkt = mrkts[0];
+        else
+          mrkt = new Market();
+
         mrkt.ids.push(marketInfo[i].marketId);
 
         // Se buscan en runners si existe el runners adecuado para actualizarlo
-        
-      /*  for(let cror: Runner of mrkt.runners){
-          cror.ids.c
+
+        let existThisRunner: boolean = false;
+
+        // tslint:disable-next-line:prefer-for-of
+        for (let rd = 0; rd < marketInfo[i].runnerDetails.length; rd++) {
+          existThisRunner = false;
+          let runner: Runner;
+          // tslint:disable-next-line:prefer-for-of
+          for (let ri = 0; ri < mrkt.runners.length; ri++) {
+            runner = mrkt.runners[ri];
+            if (runner.ids.indexOf(marketInfo[i].runnerDetails[rd].selectionId + '_betfairES') !== -1) {
+              existThisRunner = true;
+              break;
+            }
+          }
+          if (!existThisRunner){
+            runner = new Runner();
+            runner.ids.push(marketInfo[i].runnerDetails[rd].selectionId + '_betfairES');
+            mrkt.runners.push(runner);
+          }
+
+          runner.fee = marketInfo[i].runnerDetails[rd].runnerOdds.decimalDisplayOdds.decimalOdds;
+
+
+          let mercados: Market[] = [];
+          mercados.push(mrkt);
+          mercados = await this.marketService.save(mercados);
         }
-      }*/
+      }
 
 
       markets = [];

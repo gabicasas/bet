@@ -5,7 +5,7 @@ import { Runner } from './runner.mongo.entity';
 export class Market {
   @ObjectIdColumn() id: ObjectID;
 
-  @Column() ids: string[];
+  @Column() ids: string[] = [];
 
- @Column() runners: Runner[];
-}
+ @Column() runners: Runner[] = [];
+} 
