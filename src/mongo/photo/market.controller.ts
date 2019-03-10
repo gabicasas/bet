@@ -44,16 +44,19 @@ export class MarketController {
             marketAux.push(arrayMarket[i + j]);
           }
         }
-      }
+
+      /*  markets = [];
+        marketAux = [];
+      } */
 
 
 
 
       // Se solicitan datos de diez mercados
-      const marketInfo: any[] = await this.marketService.obtainMarketsFromBetfair(markets);
+        const marketInfo: any[] = await this.marketService.obtainMarketsFromBetfair(markets);
 
       // tslint:disable-next-line:prefer-for-of
-      for (let i: number = 0; i < marketInfo.length; i++) {
+        for (let i: number = 0; i < marketInfo.length; i++) {
 
         this.logger.log('Mercado ' + marketInfo[i].marketId);
         let mrkt: Market;
@@ -98,9 +101,9 @@ export class MarketController {
       }
 
 
-      markets = [];
-      marketAux = [];
-
+        markets = [];
+        marketAux = [];
+    }
     });
     return 'aaaa';
   }
