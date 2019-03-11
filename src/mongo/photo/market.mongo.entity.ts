@@ -1,7 +1,7 @@
 import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 import { Runner } from './runner.mongo.entity';
 
-@Entity({name: 'mercado'})
+@Entity()
 export class Market {
   @ObjectIdColumn() id: ObjectID;
 
