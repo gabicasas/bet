@@ -8,5 +8,5 @@ export class Runner {
    ids: string[] = [];
 
  // @Column()
-  fee: any;
+  fee: any = {};
 }
