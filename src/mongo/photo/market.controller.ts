@@ -66,7 +66,7 @@ export class MarketController {
             mrkt = mrkts[0];
           else {
             mrkt = new Market();
-            mrkt.ids.push(marketInfo[i].marketId);
+            mrkt.ids.push(marketInfo[i].marketId + '_betfairES');
           }
 
           // Se buscan en runners si existe el runners adecuado para actualizarlo
