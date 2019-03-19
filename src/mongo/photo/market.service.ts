@@ -43,19 +43,16 @@ export class MarketService {
 );
   }
 
-  async save(markets: Market[]): Promise<Market[]> {
+  public async save(markets: Market[]): Promise<Market[]> {
     return await this.marketRepository.save(markets);
   }
-
 
   /*
 Mercado con un solo corredor que se almacena en MarketTest con multiples ids de mercado
 y crredor para ir guardando loas apuestas similares de distintas casas.
 
-
-  
   */
-  async setRunnerInMarket(marketT: MarketTest): Promise<any> {
+  public async setRunnerInMarket(marketT: MarketTest): Promise<any> {
 
       const mts: MarketTest[] = await this.marketTestRepository.find();
       if (mts.length === 0){
@@ -66,8 +63,8 @@ y crredor para ir guardando loas apuestas similares de distintas casas.
         if (mkt.ids.indexOf(marketT.ids[0]) === -1){ // Es un mercado nuevo,luego se añade
           mkt.ids.push(marketT.ids[0]);
         }
-        if (mkt.runners[0].fee.ids.indexOf(marketT.runners[0].fee.ids[0]) === -1){ // Es un mercado nuevo,luego se añade
-          mkt.runners[0].fee.ids.push(marketT.runners[0].fee.ids[0]);
+        if (mkt.runners[0].ids.indexOf(marketT.runners[0].ids[0]) === -1){ // Es un id de runner nuevo,luego se añade
+          mkt.runners[0].ids.push(marketT.runners[0].ids[0]);
         }
 
         return  this.marketTestRepository.save(mts);

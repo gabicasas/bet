@@ -5,6 +5,7 @@ import { BetfairService } from '../../betfair/betfair.service';
 import { BetfairMarket } from '../../betfair/model/betfair.market.entity';
 import { Runner } from './runner.mongo.entity';
 import { runInContext } from 'vm';
+import { MarketTest } from './market.test.entity';
 
 
 
@@ -106,5 +107,10 @@ export class MarketController {
       }
     });
     return 'aaaa';
+  }
+
+  @Post('/newRunner')
+  async newRunner(@Body() body): Promise<any>{
+    return this.marketService.setRunnerInMarket( body as MarketTest);
   }
 }
