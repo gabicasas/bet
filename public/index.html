@@ -1,50 +1,62 @@
 <html>
-    <head>
-            <script src="http://localhost:3000/jquery-3.3.1.min.js"></script>
-        <script>
-        let markets=null;    
+
+<head>
+    <script src="http://localhost:3000/jquery-3.3.1.min.js"></script>
+    <script>
+        let markets = null;
         window.addEventListener("message", receiveMessage, false);
 
-function receiveMessage(event)
-{
-    
- // if (event.origin.indexOf("betfair")!=-1){
-    console.log(event.data);
-    
-    debugger;
-    markets=event.data;
-   
-   
-    $.ajax({
-    contentType: 'application/json',
-    data:JSON.stringify( markets),
-    dataType: 'json',
-    success: function(data){
-        alert("Mercados añadidos");
-    },
-    error: function(){
-        alert("mercados no añadidos");
-    },
-    processData: false,
-    type: 'POST',
-    url: '/betfair/pushNewMarkets'
-});
-   /* $.post('/betfair/pushNewMarkets','markets')
-    .done(function(data){
-        debugger;
-    })
-    .fail(function(data){
-        debugger;
-    })*/
- //}
-    return;
+        function receiveMessage(event) {
 
-  // ...
-}    
-            
-        </script>
-    </head>
-    <body>
-        pagina
-    </body>
+            // if (event.origin.indexOf("betfair")!=-1){
+            console.log(event.data);
+
+            if (event.data.type == 'newMarkets')
+                saveNewMarkets(event.data.data);
+            else   if (event.data.type == 'equalRunner')
+                sendData(event.data.data,'/market/newRunner');
+
+
+
+            /* $.post('/betfair/pushNewMarkets','markets')
+             .done(function(data){
+                 debugger;
+             })
+             .fail(function(data){
+                 debugger;
+             })*/
+            //}
+            return;
+
+            // ...
+        }
+
+        var saveNewMarkets = function (markets) {
+            sendData(markets,'/betfair/pushNewMarkets');
+         };
+
+        var sendData = function(datos,uri){
+            $.ajax({
+                contentType: 'application/json',
+                data: JSON.stringify(datos),
+                dataType: 'json',
+                success: function (data) {
+                    alert("Mercados añadidos");
+                },
+                error: function () {
+                    alert("mercados no añadidos");
+                },
+                processData: false,
+                type: 'POST',
+                url: uri
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+    pagina
+</body>
+
 </html>

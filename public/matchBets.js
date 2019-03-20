@@ -1,5 +1,6 @@
 alert('gabi remote');
 debugger;
+let winMsg=window.open("http://localhost:3000/index.html");
 
 let selectionNodes = $('[data-selectionid]');
 let selections = [];
@@ -26,8 +27,14 @@ selectionNodes.mouseup(function () {
     clearTimeout(pressTimer);
     // Clear timeout
     return false;
-}).mousedown(function () {
-    // Set timeout
+}).mousedown(function (e) {
+    /**
+     * 
+     */
+    var market=e.currentTarget.getAttribute("data-marketid");
+    /*
+    *
+    */
     pressTimer = window.setTimeout(function () {
         alert('Funciona presionaod largo');
         window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
@@ -55,9 +62,11 @@ var marketsForBetfair=function(){
         if(selections[i].evento && selections[i].mercado)
             selToSend.push({evento:selections[i].evento,mercado:selections[i].mercado});
     }
-    console.log(JSON.stringify(selToSend)); 
+
     
-    let win=window.open("http://localhost:3000/index.html");
+    console.log(JSON.stringify(selToSend)); 
+    let dataToSend={type:"newMarkets",data:selToSend};
+   
     setTimeout(function(){
-    win.postMessage(selToSend,"*");},3000);
+    winMsg.postMessage(dataToSend,"*");},3000);
 };
