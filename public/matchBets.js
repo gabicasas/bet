@@ -31,17 +31,25 @@ selectionNodes.mouseup(function () {
     /**
      * 
      */
-    var market=e.currentTarget.getAttribute("data-marketid");
+    
     /*
     *
     */
     pressTimer = window.setTimeout(function () {
+        debugger;
+        console.log(e);
+        let market=e.currentTarget.getAttribute("data-marketid")+"_betfairES";
+        let event = e.currentTarget.getAttribute('data-eventid')+"_betfairES";
+        let apuesta= e.currentTarget.getAttribute('data-selectionid')+"_betfairES";
+        let fee = e.currentTarget.firstElementChild.innerHTML;
+        
+        let marketData={ids:[market],runners:[{'ids':[apuesta]}]};
         alert('Funciona presionaod largo');
-        window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
+        winMsg.postMessage({ type: "equalRunner", data: marketData }, "*");
     }, 1000);
     return false;
 });
-
+//SIN USO
 var sendMarkets=function(){
     let selToSend=[];
     for(let i in selections){
