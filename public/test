@@ -1,0 +1,38 @@
+<html>
+<head>
+<script src="./data.js"></script>
+<script src="./jsonpath-0.8.0.js"></script>
+<!-- https://goessner.net/articles/JsonPath/ -->
+
+<!--
+
+Todos los elementos con este groupId
+
+jsonPath(data,"$..[?(@.groupId=='ls8o6ll2v')]")
+
+//todos los mercados
+jsonPath(data,"$.response.events.*.markets")
+
+//todos los ids de grupo
+let groupIds=jsonPath(data,"$..groupId")
+
+// Nombre de un grupo (recorriendo el anterior)
+
+jsonPath(data,"$.."+groupIds[1]) // <-- Podia ser cualquier otro indice
+
+let marketsStruct=jsonPath(data,"$.response.events.*.markets");
+let market=[];
+for(let i in marketsStruct){
+	for(var j in marketsStruct[i])
+		market.push(marketsStruct[i][j]);
+	}
+	
+let groupIds=jsonPath(data,"$..groupId");
+for(let i in groupIds){
+	if(typeof groupIds[i] === "string")
+	...
+}	
+
+-->
+</head>
+</html>
