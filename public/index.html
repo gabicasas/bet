@@ -1,50 +1,63 @@
 <html>
-    <head>
-            <script src="http://localhost:3000/jquery-3.3.1.min.js"></script>
-        <script>
-        let markets=null;    
-        window.addEventListener("message", receiveMessage, false);
+<head>
+<script src="./data.js"></script>
+<script src="./jsonpath-0.8.0.js"></script>
+<!-- https://goessner.net/articles/JsonPath/ -->
 
-function receiveMessage(event)
-{
-    
- // if (event.origin.indexOf("betfair")!=-1){
-    console.log(event.data);
-    
-    debugger;
-    markets=event.data;
-   
-   
-    $.ajax({
-    contentType: 'application/json',
-    data:JSON.stringify( markets),
-    dataType: 'json',
-    success: function(data){
-        alert("Mercados añadidos");
-    },
-    error: function(){
-        alert("mercados no añadidos");
-    },
-    processData: false,
-    type: 'POST',
-    url: '/betfair/pushNewMarkets'
-});
-   /* $.post('/betfair/pushNewMarkets','markets')
-    .done(function(data){
-        debugger;
-    })
-    .fail(function(data){
-        debugger;
-    })*/
- //}
-    return;
+<script>
 
-  // ...
-}    
-            
-        </script>
-    </head>
-    <body>
-        pagina
-    </body>
+//Todos los elementos con este groupId
+
+jsonPath(data,"$..[?(@.groupId=='ls8o6ll2v')]")
+
+//todos los mercados
+//let markets=jsonPath(data,"$.response.events.*.markets")
+
+
+
+
+// Nombre de un grupo (recorriendo el anterior)
+
+//jsonPath(data,"$.."+groupIds[1]) // <-- Podia ser cualquier otro indice
+
+let marketName={}; //Almacena los nombres descriptivos de los mercados	
+//todos los ids de grupo	
+let groupIds=jsonPath(data,"$..groupId");
+for(let i in groupIds){
+	if(typeof groupIds[i] === "string"){
+		let nameGroup = jsonPath(data,"$.."+groupIds[i]);
+		console.log(nameGroup[0].id+' '+nameGroup[0].name );
+		marketName[nameGroup[0].id]={};
+		marketName[nameGroup[0].id].name=nameGroup[0].name;
+		marketName[nameGroup[0].id].optionNames=data.response.groups[nameGroup[0].id].optionNames;
+		
+	}
+		
+}
+
+
+
+
+
+
+let marketsStruct=jsonPath(data,"$.response.events.*.markets");
+let market=[];
+for(let i in marketsStruct){
+	for(var j in marketsStruct[i]){
+		marketsStruct[i][j].name=marketName[marketsStruct[i][j].groupId].name;
+		let index=0;
+		//Revisar esto que no pasa del primero
+		for(let k in marketsStruct[i][j].options){
+			marketsStruct[i][j].options[k].name=marketName[marketsStruct[i][j].groupId].optionNames[index];
+		}
+		market.push(marketsStruct[i][j]);
+		
+		}
+	}
+
+
+//Añado el nombre descriptivo a los mercados	
+
+</script>
+</head>
 </html>
