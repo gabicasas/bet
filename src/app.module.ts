@@ -8,6 +8,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 // import { CatsModule } from 'mongo/cats/cats.module';
 import { PhotoModule } from './mongo/photo/photo.module';
 import { Photo } from 'mongo/photo/photo.entity';
+import { UtilModule } from './util/util.module';
+
 
 const mongoOptions = {
   type: 'mongodb',
@@ -40,6 +42,7 @@ const mongoOptions = {
     BwinModule,
     BetfairModule,
     PhotoModule,
+    UtilModule,
     /* CatsModule */],
   controllers: [AppController],
   providers: [ AppService],
