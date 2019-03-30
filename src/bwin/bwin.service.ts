@@ -1,5 +1,5 @@
 import { Injectable, HttpService, Logger } from '@nestjs/common';
-//import JSONPath from 'jsonpath-plus';
+// import JSONPath from 'jsonpath-plus';
 const {JSONPath} = require('jsonpath-plus');
 
 @Injectable()
@@ -90,10 +90,12 @@ export class BwinService {
         for(let i in marketsStruct){
             for(var j in marketsStruct[i]){
                 marketsStruct[i][j].name=marketName[marketsStruct[i][j].groupId].name;
+                marketsStruct[i][j].eventName=data.response.events[ marketsStruct[i][j].eventId].name;
                 let index=0;
-                //Revisar esto que no pasa del primero
+               
                 for(let k in marketsStruct[i][j].options){
                     marketsStruct[i][j].options[k].name=marketName[marketsStruct[i][j].groupId].optionNames[index];
+                    index++;
                 }
                 market.push(marketsStruct[i][j]);
                 
