@@ -17,7 +17,9 @@ getId(): string {
 @Get('/trackAllMarkets')
 async trackAllMarkets(): Promise<any> {
     const data: any = await this.bwin.getInfoBwin();
-    return this.bwin.transformData(data);
+    /*return*/ const dataAux: any = this.bwin.transformData(data);
+    // return this.bwin.generateMarkets(dataAux);
+    return dataAux;
 }
 
 }

@@ -1,4 +1,6 @@
 import { Injectable, HttpService, Logger } from '@nestjs/common';
+import { Market } from 'mongo/photo/market.mongo.entity';
+import { MarketService } from 'mongo/photo/market.service';
 // import JSONPath from 'jsonpath-plus';
 const {JSONPath} = require('jsonpath-plus');
 
@@ -69,7 +71,7 @@ export class BwinService {
      * Transforma el dato tal cual lo devuelve getInfoBWin (Es el T del etl)
      * @param data dato  tal cual lo devuelve getInfoBWin
      */
-    transformData(data: any):any {
+    transformData(data: any):any[] {
        
         const marketName={}; //Almacena los nombres descriptivos de los mercados	
         //todos los ids de grupo	
@@ -105,5 +107,17 @@ export class BwinService {
             return market;
     }
 
+    generateMarkets(data: any[]): Market[] {
+        const markets: Market[] = [];
+        for(let i in data){
+            let market: Market = new Market();
+            market.ids.push(data[i].id+'bwin');
+            for(let j in data[i]){
+                const runner: any = {ids:[]}
+                market.runners.push(data[i][j].id);
+            }
 
+        }
+        return markets;
+    }
 }
