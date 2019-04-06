@@ -20741,3 +20741,128 @@
         "eventName": "Oeste - Ponte Preta"
     }
 ]
+
+{
+    "Options": [
+        {
+            "comboPrevention": 9,
+            "eventId": 8368103,
+            "id": 1045741151,
+            "leagueId": 16109,
+            "marketId": 348026219,
+            "marketName": "1 X 2",
+            "name": "Real Betis",
+            "odds": "2.15",
+            "self": "4\/16109\/8368103\/348026219\/1045741151",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8417216,
+            "id": 1055118760,
+            "leagueId": 2092,
+            "marketId": 351517797,
+            "marketName": "1 X 2",
+            "name": "Atalanta",
+            "odds": "1.05",
+            "self": "4\/2092\/8417216\/351517797\/1055118760",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8368103,
+            "id": 1045741149,
+            "leagueId": 16109,
+            "marketId": 348026219,
+            "marketName": "1 X 2",
+            "name": "Rayo Vallecano",
+            "odds": "3.20",
+            "self": "4\/16109\/8368103\/348026219\/1045741149",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8368103,
+            "id": 1045741150,
+            "leagueId": 16109,
+            "marketId": 348026219,
+            "marketName": "1 X 2",
+            "name": "X",
+            "odds": "3.40",
+            "self": "4\/16109\/8368103\/348026219\/1045741150",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8417216,
+            "id": 1055118758,
+            "leagueId": 2092,
+            "marketId": 351517797,
+            "marketName": "1 X 2",
+            "name": "Parma",
+            "odds": "101.00",
+            "self": "4\/2092\/8417216\/351517797\/1055118758",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8417119,
+            "id": 1055099455,
+            "leagueId": 5631,
+            "marketId": 351510407,
+            "marketName": "1 X 2",
+            "name": "Colonia",
+            "odds": "1.04",
+            "self": "4\/5631\/8417119\/351510407\/1055099455",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8445286,
+            "id": 1060136035,
+            "leagueId": 5339,
+            "marketId": 353343611,
+            "marketName": "Apuesta por el ganador",
+            "name": "CB Miraflores Burgos",
+            "odds": "2.90",
+            "self": "7\/5339\/8445286\/353343611\/1060136035",
+            "sportId": 7
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8417216,
+            "id": 1055118759,
+            "leagueId": 2092,
+            "marketId": 351517797,
+            "marketName": "1 X 2",
+            "name": "X",
+            "odds": "9.25",
+            "self": "4\/2092\/8417216\/351517797\/1055118759",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8368103,
+            "id": 1060638796,
+            "leagueId": 16109,
+            "marketId": 353535831,
+            "marketName": "¿Marcarán los dos equipos en el partido?",
+            "name": "Sí",
+            "odds": "1.75",
+            "self": "4\/16109\/8368103\/353535831\/1060638796",
+            "sportId": 4
+        },
+        {
+            "comboPrevention": 9,
+            "eventId": 8368103,
+            "id": 1060638884,
+            "leagueId": 16109,
+            "marketId": 353535863,
+            "marketName": "¿Cuántos goles se marcarán?",
+            "name": "Más de 2,5",
+            "odds": "1.87",
+            "self": "4\/16109\/8368103\/353535863\/1060638884",
+            "sportId": 4
+        }
+    ]
+}
