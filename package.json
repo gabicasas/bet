@@ -11,6 +11,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "crawler": "ts-node -r tsconfig-paths/register src/crawlers/bwin.crawler.ts",
+    "crawler:dev": "nodemon --config crawlerdev.json",
+    "crawler:debug": "nodemon --config crawlerdev-debug.json",
     "start:dev": "nodemon",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && tsc",

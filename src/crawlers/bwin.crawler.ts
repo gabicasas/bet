@@ -12,7 +12,7 @@ export class BwinCrawler {
   crawl(site: any) {
     (async () => {
       // Wait for browser launching.
-     const browser = await puppeteer.launch();
+     const browser = await puppeteer.launch({devtools:true,headless:false,executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'});
      // Wait for creating the new page.
      const page = await browser.newPage();
   
@@ -35,9 +35,10 @@ export class BwinCrawler {
     // Go to the target page.
     let url = new URL(path);
     await page.goto(path, {waitUntil: 'networkidle2'});
+    debugger;
     // Take a snapshot in PDF format.
-    await page.pdf({path: 
-      `${dirname}/${url.pathname.slice(1).replace('/', '-')}.pdf`, format: 'A4'});
+    /*await page.pdf({path: 
+      `${dirname}/${url.pathname.slice(1).replace('/', '-')}.pdf`, format: 'A4'});*/
     if (selectors.length == 0) {
       return;
     }
@@ -46,6 +47,7 @@ export class BwinCrawler {
     let items: string[] = await page.evaluate((sel) => {
       let ret = [];
        for (let item of document.querySelectorAll(sel)) {
+         console.log(item);
         let href = item.getAttribute('href');
         ret.push(href);
        }
@@ -60,4 +62,4 @@ export class BwinCrawler {
   }
 }
 
-new BwinCrawler('https://livebetting.bwin.es/es/live?trid=in10937#/8422464').crawl({name:'bwin',children:[]})
+new BwinCrawler('https://livebetting.bwin.es/es/live?trid=in10937#/8422464').crawl({name:'bwin',children:['#scoreboard > div.content > div > lbk-scoreboard-details > div > div > div > table > tbody > tr > td:nth-child(2) > span > span.counter-number.divider']})

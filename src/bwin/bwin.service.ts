@@ -1,5 +1,5 @@
 import { Injectable, HttpService, Logger } from '@nestjs/common';
-import { Market } from 'mongo/photo/market.mongo.entity';
+import { Market } from '../mongo/photo/market.mongo.entity';
 import { MarketService } from 'mongo/photo/market.service';
 // import JSONPath from 'jsonpath-plus';
 const {JSONPath} = require('jsonpath-plus');
