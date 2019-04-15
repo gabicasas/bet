@@ -15,6 +15,8 @@ export class BwinCrawler {
      const browser = await puppeteer.launch({devtools:true,headless:false,executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'});
      // Wait for creating the new page.
      const page = await browser.newPage();
+
+     
   
      await this.crawlInternal(page, `${this.baseUrl}`, site['children'], site['name']);
   
@@ -27,6 +29,42 @@ export class BwinCrawler {
    * selectors is a list of selectors of child pages.
    */
   async crawlInternal(page: any, path: string, selectors: string[], dirname: string) {
+
+    //cient ChrmeDevtoolsProtocol
+    const clientCDP = await page.target().createCDPSession();
+
+    await clientCDP.send('Network.enable');
+
+    await clientCDP.send('Network.setRequestInterception',{ patterns: [
+      { 
+        urlPattern: '*', 
+        resourceType: 'Script', 
+        interceptionStage: 'HeadersReceived' 
+      }
+    ]});
+
+
+    /**
+     * 
+     * 
+     */
+    clientCDP.on('Network.requestIntercepted', async ({ interceptionId, request, responseHeaders, resourceType }) => {
+      console.log(`Intercepted ${request.url} {interception id: ${interceptionId}}`);
+  
+      const response = await clientCDP.send('Network.getResponseBodyForInterception',{ interceptionId });
+  
+     
+  
+      console.log(`Continuing interception ${interceptionId}`)
+      clientCDP.send('Network.continueInterceptedRequest', {
+        interceptionId,
+        rawResponse: response.body
+      });
+    });
+
+   //https://medium.com/@jsoverson/using-chrome-devtools-protocol-with-puppeteer-737a1300bac0
+
+
     // Create a directory storing the result PDFs.
     if (!existsSync(dirname)) {
       mkdirSync(dirname);
@@ -43,6 +81,17 @@ export class BwinCrawler {
       return;
     }
   
+
+
+    let a=await page.evaluate(()=> {
+      debugger;
+      let a=document.querySelectorAll('#scoreboard > div.content > div > lbk-scoreboard-details > div > div > div > table > tbody > tr > td:nth-child(2) > span > span.counter-number.divider');
+      let b=null;
+      return a[0].innerHTML;
+    })
+
+    debugger;
+    console.log(a);
        // Traversing in an order of BFS.
     let items: string[] = await page.evaluate((sel) => {
       let ret = [];
@@ -52,7 +101,7 @@ export class BwinCrawler {
         ret.push(href);
        }
        return ret;
-    }, selectors[0]['selector']);
+    }, selectors[0]);
   
     for (let item of items) {
       console.log(`Capturing ${item}`);
