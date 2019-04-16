@@ -62,6 +62,22 @@ export class BwinCrawler {
       });
     });
 
+    // https://stackoverflow.com/questions/48375700/how-to-use-puppeteer-to-dump-websocket-data
+    clientCDP.on('Network.webSocketCreated', ({requestId, url}) => {
+      console.log('Network.webSocketCreated', requestId, url)
+    })
+  
+    clientCDP.on('Network.webSocketClosed', ({requestId, timestamp}) => {
+      console.log('Network.webSocketClosed', requestId, timestamp)
+    })
+  
+    clientCDP.on('Network.webSocketFrameSent', ({requestId, timestamp, response}) => {
+      console.log('Network.webSocketFrameSent', requestId, timestamp, response.payloadData)
+    })
+    clientCDP.on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
+      console.log('Network.webSocketFrameReceived', requestId, timestamp, response.payloadData)
+    })
+
    //https://medium.com/@jsoverson/using-chrome-devtools-protocol-with-puppeteer-737a1300bac0
 
 
