@@ -2,6 +2,10 @@ import {URL} from 'url';
 import {mkdirSync, existsSync} from 'fs';
 import * as puppeteer from 'puppeteer';
 
+
+
+// Los cambios los voy a detectar con MutationObserver
+// https://stackoverflow.com/questions/47378194/fire-a-function-when-innerhtml-of-element-changes
 export class BwinCrawler {
   private baseUrl: string;
 
@@ -12,7 +16,12 @@ export class BwinCrawler {
   crawl(site: any) {
     (async () => {
       // Wait for browser launching.
-     const browser = await puppeteer.launch({devtools:true,headless:false,executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'});
+     const browser = await puppeteer.launch({devtools:true,
+      headless:false,
+      args: [
+        '--disable-extensions-except=C:\\Users\\Gabi\\eclipse2-workspace\\chrome_extension'
+      ],
+      executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'});
      // Wait for creating the new page.
      const page = await browser.newPage();
 
@@ -81,6 +90,13 @@ export class BwinCrawler {
    //https://medium.com/@jsoverson/using-chrome-devtools-protocol-with-puppeteer-737a1300bac0
 
 
+    // Escucho algunos consoles que lanzo yo en el mutation observer
+   page.on('console', async (msg) => {
+    if (msg._text === '__mutation') {
+      console.log('CAPURTA EL CONSOLE, Hay QUE HACER QUE LOS MUTATATION OBSERVER LLAMER AL CONSOLE');
+    }
+ }) 
+
     // Create a directory storing the result PDFs.
     if (!existsSync(dirname)) {
       mkdirSync(dirname);
@@ -89,6 +105,7 @@ export class BwinCrawler {
     // Go to the target page.
     let url = new URL(path);
     await page.goto(path, {waitUntil: 'networkidle2'});
+   
     debugger;
     // Take a snapshot in PDF format.
     /*await page.pdf({path: 
@@ -97,14 +114,39 @@ export class BwinCrawler {
       return;
     }
   
-
-
+    let vari = 2;
+    // #imsg-cont
     let a=await page.evaluate(()=> {
       debugger;
       let a=document.querySelectorAll('#scoreboard > div.content > div > lbk-scoreboard-details > div > div > div > table > tbody > tr > td:nth-child(2) > span > span.counter-number.divider');
       let b=null;
+
+
+      // Pongo un mutation observer observando el elemento que tiene la cuota y logueo cada vez que cambia para que lo obtenga puppeteer 
+
+      const observer = new MutationObserver(
+        function() {
+          // communicate with node through console.log method
+          console.log('__mutation')
+         }
+        )
+        const config = {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true
+        }
+        observer.observe(a[0], config);
+     })
+
+
+
+
+      vari=5;
       return a[0].innerHTML;
     })
+
+    
 
     debugger;
     console.log(a);
