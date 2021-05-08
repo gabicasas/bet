@@ -44,7 +44,7 @@
     "ts-loader": "^4.4.2",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.5.0",
-    "typeorm": "^0.2.12",
+    "typeorm": "^0.2.25",
     "typescript": "^3.0.1"
   },
   "devDependencies": {
